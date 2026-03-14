@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Особый Сюрприз</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Анимированный градиент на фоне */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #main-container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Улучшенная кнопка с анимацией пульсации */
+        .gift-button {
+            padding: 25px 50px;
+            font-size: 28px;
+            cursor: pointer;
+            background: white;
+            color: #ff3366;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        .gift-button:hover {
+            transform: translateY(-5px);
+            background: #fff0f5;
+        }
+
+        /* Эффект матового стекла для контента */
+        #content {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 90%;
+        }
+
+        .certificate {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            display: block;
+        }
+
+        h2 {
+            color: white;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        <button id="openBtn" class="gift-button">Открой Подарок!✨</button>
+
+        <div id="content">
+            <h2>С Днем Рождения!</h2>
+            <img src="IMG_6743.PNG" alt="Сертификат" class="certificate">
+        </div>
+    </div>
+
+    <audio id="bgMusic" src="b2.mp3"></audio>
+
+    <script>
+        const openBtn = document.getElementById('openBtn');
+        const content = document.getElementById('content');
+        const music = document.getElementById('bgMusic');
+
+        openBtn.addEventListener('click', () => {
+            openBtn.style.display = 'none';
+            content.style.display = 'block';
+            
+            // Запуск музыки и конфетти
+            music.play();
+            
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Праздничный взрыв конфетти
+            var end = Date.now() + (7 * 1000);
+            var colors = ['#ffffff', '#ff3366', '#23d5ab'];
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        });
+    </script>
+</body>
+</html>
